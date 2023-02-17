@@ -1,14 +1,63 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { authContext } from "../Context/UserContext";
+import { toast } from "react-hot-toast";
+import { LoadingContext } from "../Context/LoadingContext";
 
 const SignIn = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
+  const { setIsLoading } = useContext(LoadingContext);
+  const { user, googleLogin, facebookLogin, loginUser } =
+    useContext(authContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
 
   const handleSignIn = (data) => {
     console.log(data);
+    console.log(data.email, data.password);
+    loginUser(data.email, data.password)
+      .then((result) => {
+        toast.success("user login successful");
+        setIsLoading(false);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        toast.success("user login successful");
+        setIsLoading(false);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+  const handleFacebookLogin = () => {
+    facebookLogin()
+      .then(() => {
+        toast.success("user login successful");
+        setIsLoading(false);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+  console.log(user?.displayName);
 
   return (
     <div className="min-h-screen">
@@ -21,10 +70,16 @@ const SignIn = () => {
             </h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <button className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-green-500 border-green-500">
+            <button
+              onClick={handleGoogleLogin}
+              className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-green-500 border-green-500"
+            >
               <FaGoogle></FaGoogle> Google
             </button>
-            <button className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-sky-500 border-sky-500">
+            <button
+              onClick={handleFacebookLogin}
+              className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-sky-500 border-sky-500"
+            >
               <FaFacebookF></FaFacebookF> Facebook
             </button>
           </div>
@@ -63,11 +118,16 @@ const SignIn = () => {
           </div>
           <div className="form-control mt-6">
             <button className="font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
-              Login
+              Sign In
             </button>
           </div>
         </form>
-        <p className="text-left my-5">New here? <Link className="text-sky-500" to='/signup'>Sign Up</Link></p>
+        <p className="text-left my-5">
+          New here?{" "}
+          <Link className="text-sky-500" to="/signup">
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );
