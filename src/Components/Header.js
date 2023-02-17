@@ -5,26 +5,26 @@ const Header = () => {
   const menus = (
     <>
       <li>
-        <Link to="/">Home</Link>
+        <Link className='font-semibold hover:text-sky-500' to="/">Home</Link>
       </li>
       <li>
-        <Link to="about">About</Link>
+        <Link className='font-semibold hover:text-sky-500' to="about">About</Link>
       </li>
       <li>
-        <Link to="contact">Contact Us</Link>
+        <Link className='font-semibold hover:text-sky-500' to="contact">Contact Us</Link>
       </li>
       <li>
-        <Link to="signin">Sign In</Link>
+        <Link className='font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm' to="signin">Sign In</Link>
       </li>
     </>
   );
   return (
-    <div className="navbar">
+    <div className="navbar py-5">
       <div className="flex-1">
-        <Link className="text-xl font-bold">Work Finder</Link>
+        <Link className="text-2xl font-bold"><span className="text-sky-500">Work</span> <span className="text-green-500">Finder</span></Link>
       </div>
-      <div className="flex-none">
-        <ul className="menu menu-horizontal px-1 hidden md:flex">{menus}</ul>
+      <div className="flex-none gap-8">
+        <ul className="px-1 hidden md:flex justify-center items-center gap-8">{menus}</ul>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
@@ -33,7 +33,7 @@ const Header = () => {
           </label>
           <ul
             tabIndex={0}
-            className="mt-3 md:hidden p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
+            className="mt-3 bg-white md:hidden p-2 shadow menu menu-compact dropdown-content w-52"
           >
             {menus}
           </ul>

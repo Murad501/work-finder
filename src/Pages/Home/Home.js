@@ -1,9 +1,10 @@
 import React from 'react';
+import FindJob from './FindJob/FindJob';
 
 const Home = () => {
     return (
         <div>
-            <h1>hello from home page</h1>
+            <FindJob></FindJob>
         </div>
     );
 };
