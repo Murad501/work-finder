@@ -9,7 +9,7 @@ const ExperiencedJob = () => {
   const experiencedJobs = posts
     .filter((post) => post.type.toLowerCase() === "experienced")
     .sort((a, b) => b.salary - a.salary)
-    .slice(0, 3);
+    .slice(0, 6);
   return (
     <div className="mx-auto my-20 grid grid-cols-1 items-center">
       <h1 className="font-bold text-4xl text-green-500 mb-10">

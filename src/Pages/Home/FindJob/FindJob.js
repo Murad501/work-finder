@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import image from "../../../Assets/jobSeekerBg.jpg";
 
 const FindJob = () => {
+  const [isFindingJobs, setIsFindingJobs] = useState(true)
   const myStyle = {
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),url(${image})`,
     minHeight: "100vh",
@@ -21,10 +22,10 @@ const FindJob = () => {
           <h1 className="text-3xl md:text-7xl mb-10 mt-5 md:mt-10 md:mb-20 leading-relaxed"><span className='font-bold'>Your Dream</span> <br /> Job is Waiting</h1>
         </div>
         <div className="flex justify-start gap-2 mb-2">
-          <button className="w-36 bg-green-500 text-white h-16 text-base mx-auto md:m-0 rounded-sm font-semibold">
+          <button onClick={()=> setIsFindingJobs(true)} className={`w-36 ${isFindingJobs ? 'bg-green-500 text-white' : 'bg-white text-black'} h-16 text-base mx-auto md:m-0 rounded-sm font-semibold`}>
             Find a Job
           </button>
-          <button className="w-36 bg-white text-black h-16 text-base mx-auto md:m-0 rounded-sm font-semibold">
+          <button onClick={()=> setIsFindingJobs(false)} className={`w-36 ${!isFindingJobs ? 'bg-green-500 text-white' : 'bg-white text-black'} h-16 text-base mx-auto md:m-0 rounded-sm font-semibold`}>
             Find a Candidate
           </button>
         </div>

@@ -1,3 +1,4 @@
+import Page404 from "../Components/Page404";
 import Blog from "../Pages/Blog/Blog";
 import ExperiencedJobs from "../Pages/ExperiencedJobs/ExperiencedJobs";
 import FreshersJob from "../Pages/FreshersJob/FreshersJob";
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Main></Main>,
-        errorElement: <p>You are lost go to home</p>,
+        errorElement: <Page404></Page404>,
         children: [
             {
                 path: '/',
