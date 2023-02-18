@@ -1,6 +1,9 @@
 import Blog from "../Pages/Blog/Blog";
+import PostDetails from "../Pages/PostDetails/PostDetails";
+import PostJob from "../Pages/PostJob/PostJob";
 import SignIn from "../Pages/SignIn";
 import SignUp from "../Pages/SignUp";
+import PrivateRoutes from "./PrivateRoutes";
 
 const { createBrowserRouter } = require("react-router-dom");
 const { default: Main } = require("../Layout/Main");
@@ -27,6 +30,14 @@ const router = createBrowserRouter([
             {
                 path: '/signup',
                 element: <SignUp></SignUp>
+            },
+            {
+                path: '/post-job',
+                element: <PrivateRoutes><PostJob></PostJob></PrivateRoutes>
+            },
+            {
+                path: '/post/:id',
+                element: <PostDetails></PostDetails>
             }
         ]
     }

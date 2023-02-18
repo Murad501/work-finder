@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { authContext } from "../Context/UserContext";
 import { toast } from "react-hot-toast";
@@ -10,13 +10,15 @@ import { LoadingContext } from "../Context/LoadingContext";
 
 const SignUp = () => {
   const [imgFile, setImgFile] = useState(null);
+  const [haveCompany, setHaveCompany] = useState(false);
   const imgbbApi = "27f61216e1a719be5f702a9a5764c05f";
   const { register, handleSubmit } = useForm();
   const { setIsLoading } = useContext(LoadingContext);
-  const { user, googleLogin, facebookLogin, createUser } = useContext(authContext);
+  const { user, googleLogin, facebookLogin, createUser } =
+    useContext(authContext);
 
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   let from = location.state?.from?.pathname || "/";
 
   const handleSignUp = (data) => {
@@ -42,9 +44,82 @@ const SignUp = () => {
                   photoURL: imgUrl,
                 })
                   .then(() => {
-                    toast.success("user name updated");
+                    const user = {
+                      name: result.user.displayName,
+                      email: result.user.email,
+                      photo: result.user.photoURL,
+                      role: "user",
+                    };
+                    fetch("http://localhost:5000/user", {
+                      method: "POST",
+                      headers: {
+                        "content-type": "application/json",
+                      },
+                      body: JSON.stringify(user),
+                    })
+                      .then((res) => res.json())
+                      .then((data) => {
+                        console.log(data);
+                        setIsLoading(false);
+                        toast.success("user signup successful");
+                        navigate(from, { replace: true });
+                      });
+                  })
+                  .catch((error) => {
+                    console.error(error);
                     setIsLoading(false);
-                    navigate(from, { replace: true });
+                  });
+              })
+              .catch((error) => {
+                console.error(error);
+                setIsLoading(false);
+              });
+          }
+        });
+    }
+  };
+  const handleCompanySignUp = (data) => {
+    setIsLoading(true);
+    if (imgFile) {
+      const image = imgFile.file;
+      const formData = new FormData();
+      formData.append("image", image);
+      fetch(`https://api.imgbb.com/1/upload?key=${imgbbApi}`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.data.url) {
+            const imgUrl = result.data.url;
+            createUser(data.email, data.password)
+              .then((result) => {
+                const currentUser = result.user;
+                updateProfile(currentUser, {
+                  displayName: data.name,
+                  photoURL: imgUrl,
+                })
+                  .then(() => {
+                    const company = {
+                      name: result.user.displayName,
+                      email: result.user.email,
+                      logo: result.user.photoURL,
+                      role: "company",
+                    };
+                    fetch("http://localhost:5000/company", {
+                      method: "POST",
+                      headers: {
+                        "content-type": "application/json",
+                      },
+                      body: JSON.stringify(company),
+                    })
+                      .then((res) => res.json())
+                      .then((data) => {
+                        console.log(data);
+                        setIsLoading(false);
+                        toast.success("account created successful");
+                        navigate(from, { replace: true });
+                      });
                   })
                   .catch((error) => {
                     console.error(error);
@@ -64,9 +139,26 @@ const SignUp = () => {
     setIsLoading(true);
     googleLogin()
       .then((result) => {
-        toast.success("user login successful");
-        setIsLoading(false);
-        navigate(from, { replace: true });
+        const user = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          role: "user",
+        };
+        fetch("http://localhost:5000/user", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setIsLoading(false);
+            toast.success("user signup successful");
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -76,10 +168,27 @@ const SignUp = () => {
 
   const handleFacebookLogin = () => {
     facebookLogin()
-      .then(() => {
-        toast.success("user login successful");
-        setIsLoading(false);
-        navigate(from, { replace: true });
+      .then((result) => {
+        const user = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          role: "user",
+        };
+        fetch("http://localhost:5000/user", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setIsLoading(false);
+            toast.success("user signup successful");
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -99,77 +208,148 @@ const SignUp = () => {
               Enter your credentials to access your account
             </h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <button
-              onClick={handleGoogleLogin}
-              className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-green-500 border-green-500"
-            >
-              <FaGoogle></FaGoogle> Google
-            </button>
-            <button
-              onClick={handleFacebookLogin}
-              className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-sky-500 border-sky-500"
-            >
-              <FaFacebookF></FaFacebookF> Facebook
-            </button>
+          <div className="text-center flex justify-center items-center gap-5 my-10">
+            Have a Company{" "}
+            <input
+              onClick={() => setHaveCompany(!haveCompany)}
+              checked={haveCompany}
+              type="checkbox"
+              className="toggle toggle-info"
+            />
           </div>
         </div>
-        <div className="divider my-50 max-w-sm mx-auto divide-sky-500">OR</div>
-        <form onSubmit={handleSubmit(handleSignUp)}>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-gray-500 font-semibold">
-                Name
-              </span>
-            </label>
-            <input
-              {...register("name", { required: true })}
-              type="text"
-              placeholder="John Doe"
-              className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-gray-500 font-semibold">
-                Email
-              </span>
-            </label>
-            <input
-              {...register("email", { required: true })}
-              type="text"
-              placeholder="example@gmail.com"
-              className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-gray-500 font-semibold">
-                Password
-              </span>
-            </label>
-            <input
-              {...register("password", { required: true })}
-              type="text"
-              placeholder="********"
-              className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
-            />
-          </div>
-          <div>
-            <ImageUpload setImgFile={setImgFile}></ImageUpload>
-          </div>
-          <div className="form-control mt-6">
-            <button className="font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
-              Sign Up
-            </button>
-          </div>
-        </form>
-        <p className="text-left my-5">
-          Have an account?{" "}
-          <Link className="text-sky-500" to="/signin">
-            Sign In
-          </Link>
-        </p>
+        {!haveCompany ? (
+          <>
+            {" "}
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <button
+                  onClick={handleGoogleLogin}
+                  className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-green-500 border-green-500"
+                >
+                  <FaGoogle></FaGoogle> Google
+                </button>
+                <button
+                  onClick={handleFacebookLogin}
+                  className="flex justify-center items-center sm:mb-5 gap-2 border py-3 font-bold text-sky-500 border-sky-500"
+                >
+                  <FaFacebookF></FaFacebookF> Facebook
+                </button>
+              </div>
+            </div>
+            <div className="divider my-50 max-w-sm mx-auto divide-sky-500">
+              OR
+            </div>
+            {/* user account */}
+            <form onSubmit={handleSubmit(handleSignUp)}>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-gray-500 font-semibold">
+                    Name
+                  </span>
+                </label>
+                <input
+                  {...register("name", { required: true })}
+                  type="text"
+                  placeholder="John Doe"
+                  className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-gray-500 font-semibold">
+                    Email
+                  </span>
+                </label>
+                <input
+                  {...register("email", { required: true })}
+                  type="text"
+                  placeholder="example@gmail.com"
+                  className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text text-gray-500 font-semibold">
+                    Password
+                  </span>
+                </label>
+                <input
+                  {...register("password", { required: true })}
+                  type="text"
+                  placeholder="********"
+                  className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+                />
+              </div>
+              <div>
+                <ImageUpload
+                  setImgFile={setImgFile}
+                  placeholder="Upload Profile Picture"
+                ></ImageUpload>
+              </div>
+              <div className="form-control mt-6">
+                <button className="font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
+                  Sign Up
+                </button>
+              </div>
+            </form>
+          </>
+        ) : (
+          // company account
+
+          <form onSubmit={handleSubmit(handleCompanySignUp)}>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-gray-500 font-semibold">
+                  Name
+                </span>
+              </label>
+              <input
+                {...register("name", { required: true })}
+                type="text"
+                placeholder="Google, Inc"
+                className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-gray-500 font-semibold">
+                  Email
+                </span>
+              </label>
+              <input
+                {...register("email", { required: true })}
+                type="text"
+                placeholder="example@gmail.com"
+                className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-gray-500 font-semibold">
+                  Password
+                </span>
+              </label>
+              <input
+                {...register("password", { required: true })}
+                type="text"
+                placeholder="********"
+                className="input input-bordered rounded-sm w-full mb-5 outline-none focus:outline-none text-gray-500 font-semibold"
+              />
+            </div>
+            <div>
+              <ImageUpload
+                setImgFile={setImgFile}
+                placeholder="Upload Company Logo"
+              ></ImageUpload>
+            </div>
+            <div className="form-control mt-6">
+              <button className="font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
+                Create Account
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

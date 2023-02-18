@@ -2,9 +2,11 @@ import React from "react";
 import { FaTimes } from "react-icons/fa";
 import ImageUploading from "react-images-uploading";
 
-const ImageUpload = ({ setImgFile }) => {
+const ImageUpload = ({ setImgFile, placeholder }) => {
   const [images, setImages] = React.useState([]);
   const maxNumber = 1;
+
+  console.log(placeholder)
 
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
@@ -40,7 +42,7 @@ const ImageUpload = ({ setImgFile }) => {
             ) : (
               ""
             )}
-            <p>{!imageList.length && "Upload Profile Picture"}</p>
+            <p>{!imageList.length && placeholder}</p>
 
             {imageList.length === 1 &&
               imageList.map((image, index) => (

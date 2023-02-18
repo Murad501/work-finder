@@ -21,9 +21,26 @@ const SignIn = () => {
     console.log(data.email, data.password);
     loginUser(data.email, data.password)
       .then((result) => {
-        toast.success("user login successful");
-        setIsLoading(false);
-        navigate(from, { replace: true });
+        const user = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          role: 'user'
+        }
+        fetch("http://localhost:5000/user", {
+          method: 'POST',
+          headers:{
+            'content-type': 'application/json'
+          },
+          body:JSON.stringify(user)
+        })
+        .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setIsLoading(false);
+            toast.success("user sign in successful");
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -34,9 +51,26 @@ const SignIn = () => {
   const handleGoogleLogin = () => {
     googleLogin()
       .then((result) => {
-        toast.success("user login successful");
-        setIsLoading(false);
-        navigate(from, { replace: true });
+        const user = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          role: 'user'
+        }
+        fetch("http://localhost:5000/user", {
+          method: 'POST',
+          headers:{
+            'content-type': 'application/json'
+          },
+          body:JSON.stringify(user)
+        })
+        .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setIsLoading(false);
+            toast.success("user sign in successful");
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -46,10 +80,27 @@ const SignIn = () => {
 
   const handleFacebookLogin = () => {
     facebookLogin()
-      .then(() => {
-        toast.success("user login successful");
-        setIsLoading(false);
-        navigate(from, { replace: true });
+      .then((result) => {
+        const user = {
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+          role: 'user'
+        }
+        fetch("http://localhost:5000/user", {
+          method: 'POST',
+          headers:{
+            'content-type': 'application/json'
+          },
+          body:JSON.stringify(user)
+        })
+        .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setIsLoading(false);
+            toast.success("user sign in successful");
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
