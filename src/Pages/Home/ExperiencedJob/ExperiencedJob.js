@@ -3,7 +3,8 @@ import JobPostCard from "../../../Components/JobPostCard";
 import { usePosts } from "../../../Context/PostContext";
 
 const ExperiencedJob = () => {
-  const { posts } = usePosts();
+  const { state } = usePosts();
+  const {posts} = state
   return (
     <div className="mx-auto my-20 grid grid-cols-1 items-center">
       <h1 className="font-bold text-4xl text-green-500 mb-10">

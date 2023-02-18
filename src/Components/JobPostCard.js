@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaLocationArrow, FaMoneyBill, FaSuitcase } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { usePosts } from "../Context/PostContext";
 
 const JobPostCard = ({ post, isExperienced }) => {
+  const {
+    state: { appliedPost },
+  } = usePosts();
   const { companyName, location, logo, salary, title, _id } = post;
+
+  const applied = appliedPost.find((post) => post.postId === _id);
+
+  console.log(applied);
   return (
     <div className="w-full lg:w-9/12 mx-auto p-2 md:p-7 gap-5 flex-row md:flex items-center shadow-sm rounded-sm hover:shadow-md py-10">
       <figure className="w-24 border h-24 mx-auto mb-5 md:mb-0">
@@ -23,15 +31,29 @@ const JobPostCard = ({ post, isExperienced }) => {
           </p>
         </div>
       </div>
-      <Link to={`./post/${_id}`}
-        className={`font-semibold text-white px-5 py-3 rounded-sm ${
-          isExperienced
-            ? " hover:bg-sky-500 bg-green-500"
-            : " hover:bg-green-500 bg-sky-500"
-        }`}
-      >
-        Apply
-      </Link>
+      {applied ? (
+        <button
+          disabled={applied}
+          className={`font-semibold text-white px-5 py-3 rounded-sm disable-link ${
+            isExperienced
+              ? `hover:bg-sky-500 ${applied ? "bg-sky-500" : "bg-green-500"}`
+              : `hover:bg-green-500 ${applied ? "bg-green-500" : "bg-sky-500"}`
+          }`}
+        >
+          Applied
+        </button>
+      ) : (
+        <Link
+          to={`./post/${_id}`}
+          className={`font-semibold text-white px-5 py-3 rounded-sm disable-link ${
+            isExperienced
+              ? `hover:bg-sky-500 ${applied ? "bg-sky-500" : "bg-green-500"}`
+              : `hover:bg-green-500 ${applied ? "bg-green-500" : "bg-sky-500"}`
+          }`}
+        >
+          Apply
+        </Link>
+      )}
     </div>
   );
 };
