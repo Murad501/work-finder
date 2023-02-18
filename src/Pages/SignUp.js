@@ -11,7 +11,7 @@ import { LoadingContext } from "../Context/LoadingContext";
 const SignUp = () => {
   const [imgFile, setImgFile] = useState(null);
   const [haveCompany, setHaveCompany] = useState(false);
-  const imgbbApi = "27f61216e1a719be5f702a9a5764c05f";
+  const imgbbApi = process.env.REACT_APP_imgbb_api;
   const { register, handleSubmit } = useForm();
   const { setIsLoading } = useContext(LoadingContext);
   const { user, googleLogin, facebookLogin, createUser } =
@@ -50,7 +50,7 @@ const SignUp = () => {
                       photo: result.user.photoURL,
                       role: "user",
                     };
-                    fetch("http://localhost:5000/user", {
+                    fetch("https://find-work-server.vercel.app/user", {
                       method: "POST",
                       headers: {
                         "content-type": "application/json",
@@ -106,7 +106,7 @@ const SignUp = () => {
                       logo: result.user.photoURL,
                       role: "company",
                     };
-                    fetch("http://localhost:5000/company", {
+                    fetch("https://find-work-server.vercel.app/company", {
                       method: "POST",
                       headers: {
                         "content-type": "application/json",
@@ -145,7 +145,7 @@ const SignUp = () => {
           photo: result.user.photoURL,
           role: "user",
         };
-        fetch("http://localhost:5000/user", {
+        fetch("https://find-work-server.vercel.app/user", {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -175,7 +175,7 @@ const SignUp = () => {
           photo: result.user.photoURL,
           role: "user",
         };
-        fetch("http://localhost:5000/user", {
+        fetch("https://find-work-server.vercel.app/user", {
           method: "POST",
           headers: {
             "content-type": "application/json",

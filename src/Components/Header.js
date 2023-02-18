@@ -49,7 +49,7 @@ const Header = () => {
   return (
     <div className="navbar py-5">
       <div className="flex-1">
-        <Link className="text-2xl font-bold">
+        <Link to='/' className="text-2xl font-bold">
           <span className="text-sky-500">Work</span>{" "}
           <span className="text-green-500">Finder</span>
         </Link>

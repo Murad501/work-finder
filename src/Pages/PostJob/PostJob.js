@@ -18,7 +18,7 @@ const PostJob = () => {
       salary: data.salary,
       description: data.description,
     };
-    fetch("http://localhost:5000/post", {
+    fetch("https://find-work-server.vercel.app/post", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(post),

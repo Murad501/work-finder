@@ -4,7 +4,7 @@ import ItCompaniesCard from "../../../Components/ItCompaniesCard";
 const TopItCompanies = () => {
   const [itCompanies, setItCompanies] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/companies")
+    fetch("https://find-work-server.vercel.app/companies")
       .then((res) => res.json())
       .then((data) => setItCompanies(data));
   }, []);

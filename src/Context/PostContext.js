@@ -15,7 +15,7 @@ const PostContext = ({ children }) => {
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCHING_START });
-    fetch("http://localhost:5000/posts")
+    fetch("https://find-work-server.vercel.app/posts")
       .then((res) => res.json())
       .then((data) => {
         dispatch({ type: actionTypes.FETCHING_SUCCESS, payload: data });
@@ -28,7 +28,7 @@ const PostContext = ({ children }) => {
 
   useEffect(() => {
     dispatch({ type: actionTypes.FETCHING_START });
-    fetch(`http://localhost:5000/applied?email=${user?.email}`)
+    fetch(`https://find-work-server.vercel.app/applied?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({

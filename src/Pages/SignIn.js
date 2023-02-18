@@ -27,7 +27,7 @@ const SignIn = () => {
           photo: result.user.photoURL,
           role: 'user'
         }
-        fetch("http://localhost:5000/user", {
+        fetch("https://find-work-server.vercel.app/user", {
           method: 'POST',
           headers:{
             'content-type': 'application/json'
@@ -57,7 +57,7 @@ const SignIn = () => {
           photo: result.user.photoURL,
           role: 'user'
         }
-        fetch("http://localhost:5000/user", {
+        fetch("https://find-work-server.vercel.app/user", {
           method: 'POST',
           headers:{
             'content-type': 'application/json'
@@ -87,7 +87,7 @@ const SignIn = () => {
           photo: result.user.photoURL,
           role: 'user'
         }
-        fetch("http://localhost:5000/user", {
+        fetch("https://find-work-server.vercel.app/user", {
           method: 'POST',
           headers:{
             'content-type': 'application/json'
