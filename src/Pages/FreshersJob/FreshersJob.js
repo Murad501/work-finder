@@ -1,17 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import JobPostCard from "../../../Components/JobPostCard";
-import { usePosts } from "../../../Context/PostContext";
+import JobPostCard from "../../Components/JobPostCard";
+import { usePosts } from "../../Context/PostContext";
 
-const FresherJob = () => {
+const FreshersJob = () => {
   const { state } = usePosts();
   const { posts } = state;
   const fresherJobs = posts
     .filter((post) => post.type.toLowerCase() === "freshers")
-    .sort((a, b) => b.salary - a.salary)
-    .slice(0, 3)
+    .sort((a, b) => b.salary - a.salary);
   return (
-    <div className="mx-auto my-20 grid grid-cols-1 items-center">
+    <div className="mx-auto my-10 grid grid-cols-1 items-center">
       <h1 className="font-bold text-4xl text-sky-500 mb-10">
         Jobs for Freshers
       </h1>
@@ -24,11 +23,11 @@ const FresherJob = () => {
           ></JobPostCard>
         ))}
       </div>
-      <Link to='/freshers-job' className="w-40 mx-auto mt-16 font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
-        See All
+      <Link to='/' className="w-40 mx-auto mt-16 font-semibold hover:bg-green-500 bg-sky-500 text-white px-5 py-3 rounded-sm">
+        Back to Home
       </Link>
     </div>
   );
 };
 
-export default FresherJob;
+export default FreshersJob;

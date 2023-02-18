@@ -1,4 +1,6 @@
 import Blog from "../Pages/Blog/Blog";
+import ExperiencedJobs from "../Pages/ExperiencedJobs/ExperiencedJobs";
+import FreshersJob from "../Pages/FreshersJob/FreshersJob";
 import PostDetails from "../Pages/PostDetails/PostDetails";
 import PostJob from "../Pages/PostJob/PostJob";
 import SignIn from "../Pages/SignIn";
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
             {
                 path: '/post/:id',
                 element: <PrivateRoutes><PostDetails></PostDetails></PrivateRoutes>
+            },
+            {
+                path: '/freshers-job',
+                element: <FreshersJob></FreshersJob>
+            },
+            {
+                path: '/experienced-job',
+                element: <ExperiencedJobs></ExperiencedJobs>
             }
         ]
     }

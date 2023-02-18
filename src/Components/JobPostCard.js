@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaLocationArrow, FaMoneyBill, FaSuitcase } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { usePosts } from "../Context/PostContext";
@@ -14,7 +14,7 @@ const JobPostCard = ({ post, isExperienced }) => {
   console.log(applied);
   return (
     <div className="w-full lg:w-9/12 mx-auto p-2 md:p-7 gap-5 flex-row md:flex items-center shadow-sm rounded-sm hover:shadow-md py-10">
-      <figure className="w-24 border h-24 mx-auto mb-5 md:mb-0">
+      <figure className="w-24 h-24 mx-auto mb-5 md:mb-0 flex justify-center items-center">
         <img className="w-full" src={logo} alt="Movie" />
       </figure>
       <div className="card-body text-left p-2 mb-5 md:mb-0">
@@ -44,7 +44,7 @@ const JobPostCard = ({ post, isExperienced }) => {
         </button>
       ) : (
         <Link
-          to={`./post/${_id}`}
+          to={`/post/${_id}`}
           className={`font-semibold text-white px-5 py-3 rounded-sm disable-link ${
             isExperienced
               ? `hover:bg-sky-500 ${applied ? "bg-sky-500" : "bg-green-500"}`

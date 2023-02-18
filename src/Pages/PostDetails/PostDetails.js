@@ -87,7 +87,7 @@ const PostDetails = () => {
                 </div>
               </div>
             </div>
-            <p className="my-5">{description}</p>
+            <p className="my-5 text-left">{description}</p>
 
             {applied ? (
               <button
